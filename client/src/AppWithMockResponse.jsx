@@ -121,6 +121,21 @@ const DOC_KEYS = {
   // ... other categories ...
 };
 
+// Mock API for testing
+async function mockExtractAPI(formData) {
+  // Simulate network delay
+  await new Promise((res) => setTimeout(res, 500));
+  return {
+    status: "success",
+    extraction: {
+      doc_name: formData.get("doc_name"),
+      company_type: formData.get("company_type"),
+      category: formData.get("category"),
+    },
+    text_excerpt: `Ceci est un extrait simulé pour ${formData.get("doc_name")}`,
+  };
+}
+
 function App() {
   const [file, setFile] = useState(null);
   const [text, setText] = useState("");
@@ -250,12 +265,18 @@ function App() {
       formData.append("category", purpose);
       formData.append("company_type", companyType);
       formData.append("doc_name", docName);
-      const response = await fetch("http://localhost:5000/extract", {
-        method: "POST",
-        body: formData,
-      });
-      if (!response.ok) throw new Error("Extraction failed");
-      const data = await response.json();
+      let data;
+      if (process.env.NODE_ENV === "development" && window.location.hostname === "localhost") {
+        // Use mock in dev
+        data = await mockExtractAPI(formData);
+      } else {
+        const response = await fetch("http://localhost:5000/extract", {
+          method: "POST",
+          body: formData,
+        });
+        if (!response.ok) throw new Error("Extraction failed");
+        data = await response.json();
+      }
       setDocStates((prev) => ({ ...prev, [docName]: { ...docState, loading: false, result: data, error: "" } }));
     } catch (e) {
       setDocStates((prev) => ({ ...prev, [docName]: { ...docState, loading: false, error: "Extraction failed", result: null } }));
