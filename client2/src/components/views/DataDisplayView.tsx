@@ -7,6 +7,7 @@ import type { ExtractedData, StepProps } from "@/types/processing";
 
 interface DataDisplayViewProps extends StepProps {
   extractedData: ExtractedData[];
+  onNext: () => void;
 }
 
 const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewProps) => {
@@ -31,6 +32,10 @@ const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewP
       objet_social: "Business Purpose"
     };
     return fieldNames[key] || key.replace(/_/g, ' ');
+  };
+
+  const handleContinue = () => {
+    onNext();
   };
 
   return (
@@ -129,7 +134,7 @@ const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewP
         <Button variant="outline" onClick={onPrevious} size="lg">
           Previous
         </Button>
-        <Button onClick={onNext} size="lg" className="px-8">
+        <Button onClick={handleContinue} size="lg" className="px-8">
           Continue to Verification
         </Button>
       </div>
@@ -138,4 +143,3 @@ const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewP
 };
 
 export default DataDisplayView;
-
