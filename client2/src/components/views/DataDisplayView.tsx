@@ -7,10 +7,10 @@ import type { ExtractedData, StepProps } from "@/types/processing";
 
 interface DataDisplayViewProps extends StepProps {
   extractedData: ExtractedData[];
-  onNext: () => void;
+  processDiscrepancies: () => void;
 }
 
-const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewProps) => {
+const DataDisplayView = ({ extractedData, processDiscrepancies, onPrevious }: DataDisplayViewProps) => {
   const renderDataField = (key: string, value: any) => {
     return (
       <div className="flex justify-between items-center p-4 bg-white rounded-lg border hover:border-blue-200 transition-colors">
@@ -35,7 +35,7 @@ const DataDisplayView = ({ extractedData, onNext, onPrevious }: DataDisplayViewP
   };
 
   const handleContinue = () => {
-    onNext();
+    processDiscrepancies();
   };
 
   return (

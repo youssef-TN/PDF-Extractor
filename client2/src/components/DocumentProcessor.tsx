@@ -66,7 +66,7 @@ const DocumentProcessor = () => {
         return (
           <DataDisplayView 
             extractedData={processingData.extractedData}
-            onNext={processDiscrepancies}
+            processDiscrepancies={processDiscrepancies}
             {...commonProps}
           />
         );

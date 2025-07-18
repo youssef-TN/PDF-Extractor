@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Download, FileText } from "lucide-react";
 import type { ProcessingData } from "@/types/processing";
-import { useToast } from "@/hooks/use-toast";
 
 interface PDFGenerationProps {
   data: ProcessingData;
@@ -15,7 +14,6 @@ const PDFGeneration = ({ data, onPrevious }: PDFGenerationProps) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfGenerated, setPdfGenerated] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const { toast } = useToast();
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -30,13 +28,13 @@ const PDFGeneration = ({ data, onPrevious }: PDFGenerationProps) => {
       setDownloadUrl(url);
       setPdfGenerated(true);
       
-      toast({
+      console.log({
         title: "PDF Generated Successfully",
         description: "Your document is ready for download."
       });
       
     } catch (error) {
-      toast({
+      console.log({
         title: "Generation Failed",
         description: "There was an error generating your PDF. Please try again.",
         variant: "destructive"
@@ -55,7 +53,7 @@ const PDFGeneration = ({ data, onPrevious }: PDFGenerationProps) => {
       a.click();
       document.body.removeChild(a);
       
-      toast({
+      console.log({
         title: "Download Started",
         description: "Your document is being downloaded."
       });

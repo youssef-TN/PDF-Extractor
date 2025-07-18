@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import type { ProcessingData, CompanyType, UploadedFile, ExtractedData, Discrepancy, RuleViolation } from '@/types/processing';
 import { documentService } from '@/services/documentService';
 import { rulesEngine } from '@/services/rulesEngine';
-import { useToast } from '@/hooks/use-toast';
 
 export const useDocumentProcessor = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -17,7 +16,6 @@ export const useDocumentProcessor = () => {
     ruleViolations: [],
     templateData: {}
   });
-  const { toast } = useToast();
 
   const updateProcessingData = useCallback((data: Partial<ProcessingData>) => {
     setProcessingData(prev => ({ ...prev, ...data }));
@@ -49,14 +47,14 @@ export const useDocumentProcessor = () => {
         extractedData 
       });
       
-      toast({
+      console.log({
         title: "Files uploaded successfully",
         description: `${files.length} files processed and data extracted.`
       });
       
       goToNextStep();
     } catch (error) {
-      toast({
+      console.log({
         title: "Upload failed",
         description: "There was an error processing your files. Please try again.",
         variant: "destructive"
@@ -64,7 +62,7 @@ export const useDocumentProcessor = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [updateProcessingData, goToNextStep, toast]);
+  }, [updateProcessingData, goToNextStep]);
 
   const processDiscrepancies = useCallback(() => {
     const discrepancies = documentService.findDiscrepancies(processingData.extractedData);
@@ -109,14 +107,14 @@ export const useDocumentProcessor = () => {
     try {
       const pdfUrl = await documentService.generatePDF(processingData.templateData, processingData.companyType!);
       
-      toast({
+      console.log({
         title: "PDF Generated Successfully",
         description: "Your document is ready for download."
       });
       
       return pdfUrl;
     } catch (error) {
-      toast({
+      console.log({
         title: "Generation Failed",
         description: "There was an error generating your PDF. Please try again.",
         variant: "destructive"
@@ -125,7 +123,7 @@ export const useDocumentProcessor = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [processingData.templateData, processingData.companyType, toast]);
+  }, [processingData.templateData, processingData.companyType]);
 
   const resetProcessor = useCallback(() => {
     setCurrentStep(1);

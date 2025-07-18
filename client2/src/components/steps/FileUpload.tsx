@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload, File, X, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import type { ProcessingData, UploadedFile } from "@/types/processing";
-import { useToast } from "@/hooks/use-toast";
 
 interface FileUploadProps {
   data: ProcessingData;
@@ -16,7 +15,6 @@ const FileUpload = ({ data, onComplete, onPrevious }: FileUploadProps) => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>(data.uploadedFiles);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -46,7 +44,7 @@ const FileUpload = ({ data, onComplete, onPrevious }: FileUploadProps) => {
 
   const handleUpload = async () => {
     if (uploadedFiles.length === 0) {
-      toast({
+      console.log({
         title: "No files selected",
         description: "Please select at least one file to upload.",
         variant: "destructive"
@@ -74,7 +72,7 @@ const FileUpload = ({ data, onComplete, onPrevious }: FileUploadProps) => {
         }
       }));
 
-      toast({
+      console.log({
         title: "Files uploaded successfully",
         description: `${uploadedFiles.length} files processed and data extracted.`
       });
@@ -85,7 +83,7 @@ const FileUpload = ({ data, onComplete, onPrevious }: FileUploadProps) => {
       });
       
     } catch (error) {
-      toast({
+      console.log({
         title: "Upload failed",
         description: "There was an error processing your files. Please try again.",
         variant: "destructive"
